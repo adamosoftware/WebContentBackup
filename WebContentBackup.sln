@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebContentBackup.WinForm", "WebContentBackup.WinForm\WebContentBackup.WinForm.csproj", "{82F1F4BC-327F-4E9D-95CE-20B902BDF2F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebContentBackup.Mvc", "WebContentBackup.Mvc\WebContentBackup.Mvc.csproj", "{D331E206-A324-441D-82ED-CACE4D288475}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebContentBackup.Models", "WebContentBackup.Models\WebContentBackup.Models.csproj", "{4A9CBC46-5DB6-4858-8B3E-94D6086B725F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{82F1F4BC-327F-4E9D-95CE-20B902BDF2F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82F1F4BC-327F-4E9D-95CE-20B902BDF2F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82F1F4BC-327F-4E9D-95CE-20B902BDF2F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D331E206-A324-441D-82ED-CACE4D288475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D331E206-A324-441D-82ED-CACE4D288475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D331E206-A324-441D-82ED-CACE4D288475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D331E206-A324-441D-82ED-CACE4D288475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A9CBC46-5DB6-4858-8B3E-94D6086B725F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A9CBC46-5DB6-4858-8B3E-94D6086B725F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A9CBC46-5DB6-4858-8B3E-94D6086B725F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A9CBC46-5DB6-4858-8B3E-94D6086B725F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
