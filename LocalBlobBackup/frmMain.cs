@@ -55,11 +55,8 @@ namespace LocalBlobBackup
 		private void ReportProgress(BlobBackup.Progress obj)
 		{
 			tslStatus.Text = obj.Message;
-			if (obj.PercentDone > 0)
-			{
-				toolStripProgressBar1.Visible = true;
-				toolStripProgressBar1.Value = obj.PercentDone;
-			}
+			toolStripProgressBar1.Visible = (obj.PercentDone > 0);
+			toolStripProgressBar1.Value = obj.PercentDone;
 		}
 	}
 }
