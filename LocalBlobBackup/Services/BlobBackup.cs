@@ -36,7 +36,7 @@ namespace LocalBlobBackup.Services
 
 				foreach (var blob in blobs)
 				{
-					progress.Report(new Progress(containersDone, totalContainers) { Message = $"Downloading {blob.Name}" });
+					progress.Report(new Progress(containersDone, totalContainers) { Message = $"Downloading {containerName}/{blob.Name}" });
 
 					string localFile = Path.Combine(backupPath, containerName, blob.Name);
 					string filePath = Path.GetDirectoryName(localFile);

@@ -2,6 +2,7 @@
 using LocalBlobBackup.Models;
 using LocalBlobBackup.Services;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using WinForms.Library;
 
@@ -11,12 +12,14 @@ namespace LocalBlobBackup
 	{
 		private AppSettings _settings;
 
+		public string[] StartupArguments { get; set; }
+
 		public frmMain()
 		{
 			InitializeComponent();
 		}
 
-		private void frmMain_Load(object sender, EventArgs e)
+		private async void frmMain_Load(object sender, EventArgs e)
 		{
 			_settings = JsonSettingsBase.Load<AppSettings>();
 
@@ -26,6 +29,18 @@ namespace LocalBlobBackup
 			binder.Add(tbAccountKey, m => m.AccountKey);
 			binder.Add(bldLocalPath, m => m.LocalPath);
 			binder.LoadValues();
+
+			if (StartAutomatically())
+			{
+				await RunBackupInnerAsync();
+				this.Close();
+				Application.Exit();
+			}
+		}
+
+		private bool StartAutomatically()
+		{
+			return (StartupArguments?.Any(s => s.Equals("/run")) ?? false);
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -42,14 +57,19 @@ namespace LocalBlobBackup
 		{
 			try
 			{
-				BlobBackup backup = new BlobBackup();
-				Progress<BlobBackup.Progress> reportProgress = new Progress<BlobBackup.Progress>(ReportProgress);
-				await backup.ExecuteAsync(tbAccountName.Text, tbAccountKey.Text, bldLocalPath.Text, reportProgress);
+				await RunBackupInnerAsync();
 			}
 			catch (Exception exc)
 			{
 				MessageBox.Show(exc.Message);
 			}
+		}
+
+		private async System.Threading.Tasks.Task RunBackupInnerAsync()
+		{
+			BlobBackup backup = new BlobBackup();
+			Progress<BlobBackup.Progress> reportProgress = new Progress<BlobBackup.Progress>(ReportProgress);
+			await backup.ExecuteAsync(tbAccountName.Text, tbAccountKey.Text, bldLocalPath.Text, reportProgress);
 		}
 
 		private void ReportProgress(BlobBackup.Progress obj)
