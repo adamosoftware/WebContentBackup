@@ -73,6 +73,7 @@
 			this.bldLocalPath.Suggestions = null;
 			this.bldLocalPath.TabIndex = 4;
 			this.bldLocalPath.Value = "";
+			this.bldLocalPath.BuilderClicked += new WinForms.Library.Controls.BuilderEventHandler(this.bldLocalPath_BuilderClicked);
 			// 
 			// button1
 			// 
@@ -99,6 +100,7 @@
 			this.pbMain.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
 			this.pbMain.Name = "pbMain";
 			this.pbMain.Size = new System.Drawing.Size(100, 16);
+			this.pbMain.Visible = false;
 			// 
 			// tslStatus
 			// 
@@ -124,6 +126,7 @@
 			this.Name = "frmMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Web Content Backup";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
