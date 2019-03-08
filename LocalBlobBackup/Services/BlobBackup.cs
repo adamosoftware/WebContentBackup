@@ -25,6 +25,8 @@ namespace LocalBlobBackup.Services
 
 			int containersDone = 0;
 			int totalContainers = containers.Count();
+			int totalDownloads = 0;
+			int totalSkipped = 0;
 
 			foreach (string containerName in containers)
 			{
@@ -34,8 +36,40 @@ namespace LocalBlobBackup.Services
 
 				foreach (var blob in blobs)
 				{
-					
+					progress.Report(new Progress(containersDone, totalContainers) { Message = $"Downloading {blob.Name}" });
+
+					string localFile = Path.Combine(backupPath, containerName, blob.Name);
+					string filePath = Path.GetDirectoryName(localFile);
+					if (!Directory.Exists(filePath)) Directory.CreateDirectory(filePath);
+
+					if (BackupBlob(blob, localFile, out bool localExists))
+					{
+						totalDownloads++;
+						if (localExists) File.Delete(localFile);
+						await blob.DownloadToFileAsync(localFile, FileMode.Create);
+					}
+					else
+					{
+						totalSkipped++;
+					}
 				}
+			}
+
+			progress.Report(new Progress() { Message = $"Finished {totalDownloads} files download, {totalSkipped} files skipped" });
+		}
+
+		private bool BackupBlob(CloudBlockBlob blob, string localFile, out bool localExists)
+		{
+			if (File.Exists(localFile))
+			{
+				localExists = true;
+				FileInfo fi = new FileInfo(localFile);
+				return (blob.Properties.LastModified.Value.UtcDateTime > fi.LastWriteTimeUtc);
+			}
+			else
+			{
+				localExists = false;
+				return true;				
 			}
 		}
 
