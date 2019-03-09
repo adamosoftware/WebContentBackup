@@ -49,13 +49,33 @@ namespace LocalBlobBackup.Extensions
 			return results;
 		}
 
-		public static async Task<IEnumerable<BlobFolderInfo>> ListContainerFoldersAsync(this CloudBlobClient client, string containerName, string prefix = null, IProgress<string> progress = null)
+		public static async Task<IEnumerable<BlobFolderInfo>> ListContainerFoldersAsync(this CloudBlobClient client, string containerName, string prefix = null, IProgress<string> progress = null, int rollupToDepth = 0)
 		{
 			var blobs = await ListBlobsAsync(client, containerName, prefix, progress);
 
-			return blobs
+			var results = blobs
 				.GroupBy(item => Path.GetDirectoryName(item.Name))
 				.Select(grp => new BlobFolderInfo() { Path = grp.Key, BlobCount = grp.Count() });
+
+			if (rollupToDepth == 0)
+			{
+				// give me all the individual folders
+				return results;
+			}
+			else
+			{
+				// consolidate nested folders to the specified depth and sum the blob counts accordingly
+				string PathToDepth(string path, int depth)
+				{
+					const string separator = "\\";
+					var folderNames = path.Split(new string[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+					return string.Join(separator, folderNames.Take(depth));
+				}
+				
+				return results
+					.GroupBy(item => PathToDepth(item.Path, rollupToDepth))
+					.Select(grp => new BlobFolderInfo() { Path = grp.Key, BlobCount = grp.Sum(b => b.BlobCount) });
+			}
 		}
 	}
 
