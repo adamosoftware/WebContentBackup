@@ -23,7 +23,7 @@ namespace TestConsole
 			*/
 
 			Progress<string> progress = new Progress<string>(WriteFolder);
-			var folders = client.ListContainerFoldersAsync("dropboxaosoftware", progress: progress).Result;
+			var folders = client.ListContainerFoldersAsync("aerie-hpmachine", progress: progress).Result;
 			foreach (var folder in folders)
 			{
 				Console.WriteLine($"{folder.Path}: {folder.BlobCount}");
