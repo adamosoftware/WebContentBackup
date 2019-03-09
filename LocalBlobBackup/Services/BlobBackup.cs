@@ -1,4 +1,5 @@
-﻿using LocalBlobBackup.Models;
+﻿using LocalBlobBackup.Extensions;
+using LocalBlobBackup.Models;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -21,7 +22,7 @@ namespace LocalBlobBackup.Services
 			var client = account.CreateCloudBlobClient();
 
 			progress.Report(new Progress() { Message = "Listing containers..." });
-			var containers = await ListContainersAsync(client);
+			var containers = await client.ListContainersAsync();
 
 			int containersDone = 0;
 			int totalContainers = containers.Count();
@@ -32,7 +33,7 @@ namespace LocalBlobBackup.Services
 			{
 				containersDone++;
 				progress.Report(new Progress(containersDone, totalContainers) { Message = $"Listing blobs in {containerName}..." });
-				var blobs = await ListBlobsAsync(client, containerName);
+				var blobs = await client.ListBlobsAsync(containerName);
 
 				foreach (var blob in blobs)
 				{
@@ -71,37 +72,6 @@ namespace LocalBlobBackup.Services
 				localExists = false;
 				return true;				
 			}
-		}
-
-		private async Task<IEnumerable<string>> ListContainersAsync(CloudBlobClient client, string prefix = null)
-		{
-			BlobContinuationToken token = null;
-			List<string> results = new List<string>();
-			do
-			{
-				var response = await client.ListContainersSegmentedAsync(prefix, token);
-				token = response.ContinuationToken;
-				results.AddRange(response.Results.Select(c => c.Name));
-			}
-			while (token != null);
-
-			return results;
-		}
-
-		private async Task<IEnumerable<CloudBlockBlob>> ListBlobsAsync(CloudBlobClient client, string containerName, string prefix = null)
-		{
-			var container = client.GetContainerReference(containerName);
-
-			BlobContinuationToken token = null;
-			List<CloudBlockBlob> results = new List<CloudBlockBlob>();
-			do
-			{
-				var response = await container.ListBlobsSegmentedAsync(prefix, token);
-				token = response.ContinuationToken;
-				results.AddRange(response.Results.OfType<CloudBlockBlob>());
-			} while (token != null);
-
-			return results;
 		}
 
 		public class Progress

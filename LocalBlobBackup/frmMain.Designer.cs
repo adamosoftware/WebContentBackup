@@ -64,7 +64,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tbAccountKey.Location = new System.Drawing.Point(125, 45);
 			this.tbAccountKey.Name = "tbAccountKey";
-			this.tbAccountKey.Size = new System.Drawing.Size(518, 21);
+			this.tbAccountKey.Size = new System.Drawing.Size(560, 21);
 			this.tbAccountKey.TabIndex = 3;
 			// 
 			// label2
@@ -85,7 +85,7 @@
 			this.statusStrip1.Location = new System.Drawing.Point(0, 151);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-			this.statusStrip1.Size = new System.Drawing.Size(655, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(697, 22);
 			this.statusStrip1.TabIndex = 7;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -117,7 +117,7 @@
 			this.bldLocalPath.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.bldLocalPath.Location = new System.Drawing.Point(125, 75);
 			this.bldLocalPath.Name = "bldLocalPath";
-			this.bldLocalPath.Size = new System.Drawing.Size(518, 26);
+			this.bldLocalPath.Size = new System.Drawing.Size(560, 26);
 			this.bldLocalPath.Suggestions = null;
 			this.bldLocalPath.TabIndex = 5;
 			this.bldLocalPath.Value = "";
@@ -137,7 +137,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(655, 173);
+			this.ClientSize = new System.Drawing.Size(697, 173);
 			this.Controls.Add(this.btnStartBackup);
 			this.Controls.Add(this.bldLocalPath);
 			this.Controls.Add(this.label3);
