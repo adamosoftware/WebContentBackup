@@ -1,4 +1,5 @@
 ﻿using Microsoft.WindowsAzure.Storage.Blob;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace LocalBlobBackup.Extensions
 			return results;
 		}
 
-		public static async Task<IEnumerable<CloudBlockBlob>> ListBlobsAsync(this CloudBlobClient client, string containerName, string prefix = null)
+		public static async Task<IEnumerable<CloudBlockBlob>> ListBlobsAsync(this CloudBlobClient client, string containerName, string prefix = null, IProgress<string> progress = null)
 		{
 			var container = client.GetContainerReference(containerName);
 
@@ -33,15 +34,24 @@ namespace LocalBlobBackup.Extensions
 			{
 				var response = await container.ListBlobsSegmentedAsync(prefix, token);
 				token = response.ContinuationToken;
+
+				var folders = response.Results.OfType<CloudBlobDirectory>();
+				foreach (var folder in folders)
+				{
+					progress?.Report(folder.Prefix);
+					var blobs = await ListBlobsAsync(client, containerName, folder.Prefix, progress);
+					results.AddRange(blobs);
+				}
+
 				results.AddRange(response.Results.OfType<CloudBlockBlob>());
 			} while (token != null);
 
 			return results;
 		}
 
-		public static async Task<IEnumerable<BlobFolderInfo>> ListContainerFoldersAsync(this CloudBlobClient client, string containerName, string prefix = null)
+		public static async Task<IEnumerable<BlobFolderInfo>> ListContainerFoldersAsync(this CloudBlobClient client, string containerName, string prefix = null, IProgress<string> progress = null)
 		{
-			var blobs = await ListBlobsAsync(client, containerName, prefix);
+			var blobs = await ListBlobsAsync(client, containerName, prefix, progress);
 
 			return blobs
 				.GroupBy(item => Path.GetDirectoryName(item.Name))
