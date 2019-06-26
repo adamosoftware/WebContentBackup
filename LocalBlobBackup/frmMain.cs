@@ -68,7 +68,7 @@ namespace LocalBlobBackup
 		private async System.Threading.Tasks.Task RunBackupInnerAsync()
 		{
 			BlobBackup backup = new BlobBackup();
-			Progress<BlobBackup.Progress> reportProgress = new Progress<BlobBackup.Progress>(ReportProgress);
+			var reportProgress = new Progress<BlobBackup.Progress>(ReportProgress);
 			await backup.ExecuteAsync(tbAccountName.Text, tbAccountKey.Text, bldLocalPath.Text, reportProgress);
 		}
 
